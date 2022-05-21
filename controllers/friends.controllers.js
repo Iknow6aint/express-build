@@ -17,7 +17,7 @@ function postFriend(req,res){
 }
 
 function getFriends(req,res){
-    res.json(friends)
+    res.json(model)
 }
 
 function getFriend(req,res){
