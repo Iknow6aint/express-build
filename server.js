@@ -1,14 +1,20 @@
 const express = require('express')
-const path = require('path')
-
-const { json } = require('express/lib/response')
 
 const app = express()
 
 const PORT = 3000
 
-const friendsRoute = require ('./routes/friends.routes')
-const messageRoute = require('./routes/message.routes')
+const friends =[
+    {
+        id: '0',
+        name: 'fred',
+    },
+    {
+        id: '1',
+        name: 'divine',
+    }
+]
+
 
 app.use((res,req,next)=>{
     const start = Date.now()
@@ -17,20 +23,45 @@ app.use((res,req,next)=>{
     console.log(`${req.method} ${req.url} ${delta}ms`)
 })
 
-app.set('view engine', 'hbs')
-app.set('views', path.join(__dirname, 'views'));
-
-app.use('/site',express.static(path.join(__dirname,'public')))
-app.use (express.json())
-
-
-app.use('/',(req,res)=>{
-    res.render('index',{
-        caption: 'HELLO GAY NIGGAS'
-    })
+app.get('/',(req,res)=>{
+    res.send('hello')
 })
-app.use('/friends',friendsRoute)
-app.use('/messages',messageRoute)
+app.post('/friends',(req,res)=>{
+
+    if(!req.body.name){
+       res.status(400).json({
+            error: "missing name"
+        });
+    }
+    const newFriends = {
+        name: req.body.name,
+        id: friends.lenght
+    }
+    friends.push(newFriends);
+
+    res.json(newFriends);
+})
+
+
+app.get('/friends',(req,res)=>{
+    res.json(friends)
+})
+
+app.get('/friends/:friendId',(req,res)=>{
+    const friendId = Number(req.params.friendId)
+    const friend = friends[friendId];
+    if(friend){
+        res.status(200).json(friend)
+    }else{
+        res.status(404).json({
+            error:'friend not exist'
+        })
+    }
+})
+
+app.post('/message',(req,res) =>{
+    console.log('updating...')
+})
 
 app.listen(PORT,()=>{
     console.log(`listening on ${PORT}`)
