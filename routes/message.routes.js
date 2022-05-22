@@ -1,11 +1,12 @@
 const express = require ('express')
 
 
-
-const messageRoute = express()
 const  messageControllers = require('../controllers/message.controllers')
+const messageRoute = express.Router()
 
-messageRoute.get('/',messageControllers.getMessage)
+
+messageRoute.post('/',messageControllers.postMessage)
+messageRoute.get('/',messageControllers.getMessages)
 
 
 module.exports = messageRoute;

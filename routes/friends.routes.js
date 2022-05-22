@@ -1,6 +1,6 @@
 const express = require('express')
 
-const friendsRoute = express()
+const friendsRoute = express.Router()
 const friendControllers = require('../controllers/friends.controllers')
 
 friendsRoute.use((req,res,next)=>{
